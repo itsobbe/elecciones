@@ -1,0 +1,15 @@
+menu admin: listado censo, votar
+--votar con las mismas condiciones 
+--listado censo siempre
+--abrir escrutinio ir a tabla parametros y poner si en abierrto
+--cerrar escrutinio ir a tabla y ...
+--mostrar resultados
+--asignar escaños
+
+menu votante: baja modificar datos mostrar resultados ver escaños
+
+-- mostrar resultados es el num votos por partido
+---ver escaños es ver los resultados aplicando el metodo 
+-- 
+
+en inicio sesion registro devolver obj completo
