@@ -25,6 +25,7 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" href="VistaBaja.jsp">Dar de baja</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="VistaModificarDatos.jsp">Modificar datos</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#">Resultados</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="../ControladorCargarDatosVistaVotar">Votar</a></li>
                         <li class="dropdown"><a class="dropdown-toggle nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
                             <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a><a class="dropdown-item" role="presentation" href="#">Second Item</a><a class="dropdown-item" role="presentation" href="#">Third Item</a></div>
                         </li>

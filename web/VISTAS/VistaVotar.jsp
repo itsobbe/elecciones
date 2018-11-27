@@ -1,12 +1,12 @@
 <%-- 
-    Document   : VistaModificarDatos
-    Created on : 25-nov-2018, 11:59:49
+    Document   : VistaVotar
+    Created on : 27-nov-2018, 10:31:44
     Author     : owa_7
 --%>
 
-<%@page import="modelo.Votante"%>
+<%@page import="modelo.Partido"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <!DOCTYPE html>
 <html>
 
@@ -16,17 +16,15 @@
     <title>elecciones</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="../CSS/assets/css/styles.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
 </head>
 
 <body>
-    <%  
-        if (((Votante)request.getSession().getAttribute("votante")).getVotado().equals("S")) {
-            String mensaje="Una vez votado no se pueden cambiar los datos";
-            response.sendRedirect("VistaMensajeError.jsp?error="+mensaje);
-        }
+    <% 
+    
+        ArrayList<Partido> partidos=(ArrayList<Partido>)session.getAttribute("partido");
         
-        Votante votante=(Votante)session.getAttribute("votante");  %>
+    %>
     <div>
         <nav class="navbar navbar-light navbar-expand-md navigation-clean">
             <div class="container"><a class="navbar-brand" href="#">Company Name</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -44,33 +42,29 @@
             </div>
         </nav>
     </div>
-    <div class="container d-flex justify-content-center" style="height:350px;">
-        <form action="../ControladorModificarDatos">
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group"><label>Nombre</label><input class="form-control" type="text" name="nombre" value="<% out.print(votante.getNombre()); %>" autofocus=""></div>
+    <div class="container" style="height:508px;">
+        <form action="../ControladorVotar">
+            <div class="card" style="margin:20px;">
+                <div class="card-header">
+                    <p>Elecciones 2019 de albacete</p>
                 </div>
-                <div class="col">
-                    <div class="form-group"><label>Apellidos</label><input class="form-control" type="text" name="apellidos" value="<% out.print(votante.getApellidos()); %>"></div>
+                <% for(Partido a:partidos){
+                    
+                 %>
+                <div class="form-row">
+                    <div class="col d-flex justify-content-center"><img src="<%= a.getLogo()%>" style="height:112px;width:181px;border-radius:50px;"></div>
+                    <div class="col d-flex justify-content-center align-items-center">
+                        <p><%= //out.print(a.getDenominacion()) ;
+                                a.getDenominacion()
+                            %></p>
+                    </div>
+                    <div class="col d-flex justify-content-center align-items-center"><input name="elegido" value="<%= a.getId() %>" type="radio"></div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group"><label>NIF</label><input class="form-control" type="text" name="nif" value="<% out.print(votante.getNif()); %>" readonly=""></div>
-                </div>
-                <div class="col">
-                    <div class="form-group"><label>Contraseña</label><input class="form-control" type="password" name="contrasena" value="123456789"></div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <div class="form-group"><label>Domicilio</label><input class="form-control" type="text" name="domicilio" value="<% out.print(votante.getDomicilio()); %>"></div>
-                </div>
-                <div class="col">
-                    <div class="form-group"><label>Fecha de nacimiento</label><input class="form-control" type="date" name="fechaNac" value="<% out.print(votante.getFechaNac()); %>"></div>
+                <% } %>
+                <div class="form-row">
+                    <div class="col offset-8 d-flex justify-content-center"><button class="btn btn-primary flex-column" type="submit">Button</button></div>
                 </div>
             </div>
-                <button class="btn btn-primary" type="submit">Button</button>
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -20,6 +20,18 @@
         <servlet-name>ControladorModificarDatos</servlet-name>
         <servlet-class>controlador.ControladorModificarDatos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorVotar</servlet-name>
+        <servlet-class>controlador.ControladorVotar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorCargarDatosVistaVotar</servlet-name>
+        <servlet-class>controlador.ControladorCargarDatosVistaVotar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorAsignarEscaños</servlet-name>
+        <servlet-class>controlador.ControladorAsignarEscaños</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorRegistroVotante</servlet-name>
         <url-pattern>/ControladorRegistroVotante</url-pattern>
@@ -39,6 +51,18 @@
     <servlet-mapping>
         <servlet-name>ControladorModificarDatos</servlet-name>
         <url-pattern>/ControladorModificarDatos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorVotar</servlet-name>
+        <url-pattern>/ControladorVotar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorCargarDatosVistaVotar</servlet-name>
+        <url-pattern>/ControladorCargarDatosVistaVotar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorAsignarEscaños</servlet-name>
+        <url-pattern>/ControladorAsignarEsca_os</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

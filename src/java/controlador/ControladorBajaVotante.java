@@ -48,14 +48,15 @@ public class ControladorBajaVotante extends HttpServlet {
         }
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ApplicationException {
+            throws ServletException, IOException{
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
             Votante votante=new Votante();
             votante=(Votante)request.getSession().getAttribute("votante");
             
-            //si el usuario en sesion obj.votado equals N puede darse de baja
+            try {
+                //si el usuario en sesion obj.votado equals N puede darse de baja
             if (votante.getVotado().equals("N")) {
                 //llamammos funcion
                 String no="no puede";
@@ -66,6 +67,10 @@ public class ControladorBajaVotante extends HttpServlet {
                 String mensaje="No puede darse de baja unza vez votado";
                 response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+mensaje);
             }
+            } catch (ApplicationException e) {
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+            }
+            
             
             
             /* TODO output your page here. You may use following sample code. */
@@ -95,7 +100,7 @@ public class ControladorBajaVotante extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ApplicationException ex) {
+        } catch (ServletException ex) {
             Logger.getLogger(ControladorBajaVotante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -113,7 +118,7 @@ public class ControladorBajaVotante extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ApplicationException ex) {
+        } catch (ServletException ex) {
             Logger.getLogger(ControladorBajaVotante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -21,12 +21,15 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import modelo.ApplicationException;
 import modelo.Votante;
+
 /**
  *
  * @author owa_7
  */
 public class ControladorRegistroVotante extends HttpServlet {
+
     private Connection Conexion;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,7 +39,7 @@ public class ControladorRegistroVotante extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        @Override
+    @Override
     public void init() throws ServletException {
         super.init();
         /* Establecemos la conexión, si no existe */
@@ -47,43 +50,43 @@ public class ControladorRegistroVotante extends HttpServlet {
         } catch (SQLException sqle) {
         }
     }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ApplicationException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            String nif=request.getParameter("nif");
-            String nombre=request.getParameter("nombre");
-            String apellidos=request.getParameter("apellidos");
-            String domicilio=request.getParameter("domicilio");
+
+            String nif = request.getParameter("nif");
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            String domicilio = request.getParameter("domicilio");
             //fecha convertida a formato localdate
-            String contraseña=request.getParameter("contrasena");
-            LocalDate fechaNac=LocalDate.parse(request.getParameter("fechaNac"));
-           
-            Operaciones o=new Operaciones();
-            Votante v=new Votante(nombre,apellidos,domicilio,fechaNac,contraseña,nif);
-            boolean resultado=o.insertarVotante(Conexion,v);
-            if (resultado==true) {
-                Votante obj=new Operaciones().devuelveVotante(nif, Conexion);
-                if (obj != null) {
-                    HttpSession session=request.getSession(true);
-                    session.setAttribute("votante", obj);
-                    session.setAttribute("usuario", nif);
-                    session.setAttribute("password", contraseña);
+            String contraseña = request.getParameter("contrasena");
+            LocalDate fechaNac = LocalDate.parse(request.getParameter("fechaNac"));
+
+            try {
+                Operaciones o = new Operaciones();
+                Votante v = new Votante(nombre, apellidos, domicilio, fechaNac, contraseña, nif);
+                boolean resultado = o.insertarVotante(Conexion, v);
+                if (resultado == true) {
+                    Votante obj = new Operaciones().devuelveVotante(nif, Conexion);
+                    if (obj != null) {
+                        HttpSession session = request.getSession(true);
+                        session.setAttribute("votante", obj);
+                        session.setAttribute("usuario", nif);
+                        session.setAttribute("password", contraseña);
+                    }
+                    response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
                 }
-                response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
+            } catch (ApplicationException e) {
+                
             }
-            
-            
-            
-            
-            
-            
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorRegistroVotante</title>");            
+            out.println("<title>Servlet ControladorRegistroVotante</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ControladorRegistroVotante at " + request.getContextPath() + "</h1>");
@@ -108,8 +111,6 @@ public class ControladorRegistroVotante extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ControladorRegistroVotante.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ApplicationException ex) {
-            Logger.getLogger(ControladorRegistroVotante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -127,8 +128,6 @@ public class ControladorRegistroVotante extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorRegistroVotante.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ApplicationException ex) {
             Logger.getLogger(ControladorRegistroVotante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

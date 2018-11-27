@@ -18,14 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
+import modelo.ApplicationException;
 
 /**
  *
  * @author owa_7
  */
 public class ControladorListadoCenso extends HttpServlet {
+
     private Connection Conexion;
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,7 +37,7 @@ public class ControladorListadoCenso extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-        @Override
+    @Override
     public void init() throws ServletException {
         super.init();
         /* Establecemos la conexión, si no existe */
@@ -46,25 +48,31 @@ public class ControladorListadoCenso extends HttpServlet {
         } catch (SQLException sqle) {
         }
     }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            //lamada a la funcion que devuleve un arraylist con objetos votante para el listado
-            ArrayList listado=new Operaciones().listadoCenso(Conexion);
-            //guardamos en session el array para pasarlo a la vista de listado censo y mostrarlo
-            HttpSession session=request.getSession(true);
-            session.setAttribute("arrayListadoCenso", listado);
-            if (listado!=null) {
-                response.sendRedirect("VISTAS/VistaListadoCenso.jsp");
+
+            try {
+                //lamada a la funcion que devuleve un arraylist con objetos votante para el listado
+                ArrayList listado = new Operaciones().listadoCenso(Conexion);
+                //guardamos en session el array para pasarlo a la vista de listado censo y mostrarlo
+                HttpSession session = request.getSession(true);
+                session.setAttribute("arrayListadoCenso", listado);
+                if (listado != null) {
+                    response.sendRedirect("VISTAS/VistaListadoCenso.jsp");
+                }
+            } catch (ApplicationException e) {
+                //mandamos a vista mensaje error ! arreglar
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp");
             }
-            
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorListadoCenso</title>");            
+            out.println("<title>Servlet ControladorListadoCenso</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ControladorListadoCenso at " + request.getContextPath() + "</h1>");

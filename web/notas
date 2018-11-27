@@ -1,4 +1,4 @@
-menu admin: listado censo, votar
+menu admin: listado censo, votar,ver resultados,abrir/fin consulta,abrir/cerrar escrutinio,
 --votar con las mismas condiciones 
 --listado censo siempre
 --abrir escrutinio ir a tabla parametros y poner si en abierrto

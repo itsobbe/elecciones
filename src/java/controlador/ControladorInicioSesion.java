@@ -50,14 +50,15 @@ public class ControladorInicioSesion extends HttpServlet {
     
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ApplicationException {
+            throws ServletException, IOException, SQLException {  //preguntar si aqui va sqlexcepttion y abajo en doget y post que hay en el try catch
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
             String nif=request.getParameter("nif");
             String contraseña=request.getParameter("contrasena");
             
-            //llamada a la funcion que si el usuario existe me devuelve un objeto y si no me lanza un excepcion
+            try {
+                //llamada a la funcion que si el usuario existe me devuelve un objeto y si no me lanza un excepcion
             Votante obj=new Operaciones().inicioSesion(nif, contraseña, Conexion);
             HttpSession session=request.getSession(true);
             session.setAttribute("votante", obj);
@@ -67,6 +68,10 @@ public class ControladorInicioSesion extends HttpServlet {
             if (obj.getRol().equals("votante")) {
                 response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
             }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
+            } catch (ApplicationException e) {
+                //vista mensaje error sin menu arriba
+            }
+            
             
         
             
@@ -101,8 +106,6 @@ public class ControladorInicioSesion extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(ControladorInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ApplicationException ex) {
-            Logger.getLogger(ControladorInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -120,8 +123,6 @@ public class ControladorInicioSesion extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(ControladorInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ApplicationException ex) {
             Logger.getLogger(ControladorInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
