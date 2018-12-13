@@ -22,15 +22,20 @@ public class Partido {
         this.siglas = siglas;
         this.votos = votos;
     }
-
+    public Partido(int id, String denominacion, int votos) {
+        this.id = id;
+        this.denominacion = denominacion;
+        this.votos = votos;
+    }
     public Partido(){
         
     }
 
-    public Partido(int id, String denominacion, String logo) {
+    public Partido(int id, int votos,String denominacion, String logo) {
         this.id = id;
         this.denominacion = denominacion;
         this.logo = logo;
+        this.votos=votos;
     }
     public Partido(int votos,String siglas){
         this.votos=votos;
@@ -38,6 +43,10 @@ public class Partido {
     }
     public Partido(int id){
         this.id=id;
+    }
+    public Partido(int id,int votos){
+        this.id=id;
+        this.votos=votos;
     }
 
     public String getLogo() {

@@ -79,7 +79,7 @@ public class ControladorRegistroVotante extends HttpServlet {
                     response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
                 }
             } catch (ApplicationException e) {
-                
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + e);
             }
 
             /* TODO output your page here. You may use following sample code. */

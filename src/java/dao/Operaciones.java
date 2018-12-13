@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import modelo.ApplicationException;
 import java.time.LocalDate;
+import modelo.Escaño;
 import modelo.Partido;
 
 /**
@@ -129,7 +130,7 @@ public class Operaciones {
         }
     }
 
-    public int votar(Votante votante, Partido partido, Connection conexion) throws ApplicationException{
+    public int votar(Votante votante, Partido partido, Connection conexion) throws ApplicationException {
         try {
             conexion.setAutoCommit(false);
             String orden = "UPDATE votante SET votado='S' WHERE NIF='" + votante.getNif() + "';";
@@ -152,10 +153,11 @@ public class Operaciones {
             conexion.setAutoCommit(true);
             return resultado;
         } catch (SQLException e) {
-            
+
             try {
                 conexion.rollback();
                 conexion.setAutoCommit(true);
+                //hay que lanzar una excepcion aqui tmb
             } catch (SQLException e2) {
                 throw new ApplicationException("Error votando", e2.getErrorCode(), e2.getMessage());
             }
@@ -164,13 +166,16 @@ public class Operaciones {
     }
 
     public ArrayList<Partido> devuelvePartidos(Connection conexion) throws ApplicationException {
+        //usado para cargar la vista de votar
         try {
             ArrayList<Partido> a = new ArrayList();
+            
             Statement s = conexion.createStatement();
-            ResultSet rs = s.executeQuery("SELECT * FROM partido");
+            ResultSet rs = s.executeQuery("SELECT * FROM partido order by votos DESC");
 //            if (rs.next()) {
             while (rs.next()) {
-                a.add(new Partido(rs.getInt("id"), rs.getString("denominacion"), rs.getString("logo")));
+                //si error quitar votos
+                a.add(new Partido(rs.getInt("id"),rs.getInt("votos"), rs.getString("denominacion"), rs.getString("logo")));
             }
             if (a != null) {
                 return a;
@@ -182,21 +187,22 @@ public class Operaciones {
             throw new ApplicationException("Error mostrando partidos", e.getErrorCode(), e.getMessage());
         }
     }
-    public Partido[] devuelvePartidosArray(Connection conexion){
+
+    public Partido[] devuelvePartidosArray(Connection conexion) {  //para probarlo con array de partidos
         try {
             Partido[] partido;
-            int cont=0;
-            Statement s=conexion.createStatement();
-            ResultSet rs=s.executeQuery("SELECT * FROM partido");
-            while(rs.next()){
+            int cont = 0;
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM partido");
+            while (rs.next()) {
                 cont++;
             }
-            partido=new Partido[cont];
+            partido = new Partido[cont];
             //s=conexion.createStatement();
-            int in=0;
-            rs=s.executeQuery("SELECT * FROM partido");
-            while(rs.next()){
-                partido[in]=new Partido(rs.getInt("votos"),rs.getString("siglas"));
+            int in = 0;
+            rs = s.executeQuery("SELECT * FROM partido");
+            while (rs.next()) {
+                partido[in] = new Partido(rs.getInt("votos"), rs.getString("siglas"));
                 in++;
             }
             return partido;
@@ -204,32 +210,54 @@ public class Operaciones {
             return null;
         }
     }
-    
-    public Partido[] escaños(Partido[] partido){
-        int escaños=3;
-        String mayorSigla="";
-        int maxIndice=0; //indice del partido en array mas grande en cada momento
-        int mayor=0; //guarda mayor num votos
-        String[] resultado=new String[escaños];
+
+    public ArrayList<Partido> devuelvePartidosRecuento(Connection conexion) throws ApplicationException {
+        //usado para que devuelva arraylist de partido con los datos necesarios para el recuento de escaños
+        try {
+            ArrayList<Partido> a = new ArrayList();
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM partido");
+//            if (rs.next()) {
+            while (rs.next()) {
+                a.add(new Partido(rs.getInt("id"), rs.getInt("votos")));
+            }
+            if (a != null) {
+                return a;
+            } else {
+                throw new ApplicationException("Error devolviendo partidos", 0, "No se han encontrado");
+            }
+
+        } catch (SQLException e) {
+            throw new ApplicationException("Error devolución partidos", e.getErrorCode(), e.getMessage());
+        }
+
+    }
+
+    public Partido[] escaños(Partido[] partido) { //primera prueba funciona 
+        int escaños = 3;
+        String mayorSigla = "";
+        int maxIndice = 0; //indice del partido en array mas grande en cada momento
+        int mayor = 0; //guarda mayor num votos
+        String[] resultado = new String[escaños];
         for (int i = 0; i < escaños; i++) {
             for (int j = 0; j < partido.length; j++) {
                 if (partido[j].getVotos() > mayor) {
-                    mayor=partido[j].getVotos();
-                    mayorSigla=partido[j].getSiglas();
-                    maxIndice=j;
+                    mayor = partido[j].getVotos();
+                    mayorSigla = partido[j].getSiglas();
+                    maxIndice = j;
                 }
                 if (j == partido.length - 1) {
-                    partido[maxIndice].setVotos(partido[maxIndice].getVotos()/2);
+                    partido[maxIndice].setVotos(partido[maxIndice].getVotos() / 2);
                 }
             }
-            mayor=0;
-            resultado[i]=mayorSigla;
+            mayor = 0;
+            resultado[i] = mayorSigla;
         }
         //contador escaños
-        int pp=0;
-        int psoe=0;
-        int po=0;
-        int ci=0;
+        int pp = 0;
+        int psoe = 0;
+        int po = 0;
+        int ci = 0;
         for (int i = 0; i < resultado.length; i++) {
             if (resultado[i].equals("PP")) {
                 pp++;
@@ -244,13 +272,128 @@ public class Operaciones {
                 po++;
             }
         }
-        Partido[] resultadoEsca=new Partido[4]; // 4 partidos
-        resultadoEsca[0]=new Partido(pp,"PP");
-        resultadoEsca[1]=new Partido(psoe,"PSOE");
-        resultadoEsca[2]=new Partido(po,"P");
-        resultadoEsca[3]=new Partido(ci,"Cs");
+        Partido[] resultadoEsca = new Partido[4]; // 4 partidos
+        resultadoEsca[0] = new Partido(pp, "PP");
+        resultadoEsca[1] = new Partido(psoe, "PSOE");
+        resultadoEsca[2] = new Partido(po, "P");
+        resultadoEsca[3] = new Partido(ci, "Cs");
         return resultadoEsca;
-        
+
     }
 
+    public ArrayList<Escaño> resultadoEscaño(ArrayList<Partido> partido) { //usado
+        int escaños = 3;
+        int mayorId = 0;
+        int maxIndice = 0; //indice del partido en array mas grande en cada momento
+        int mayor = 0; //guarda mayor num votos
+        ArrayList<Escaño> escaño = new ArrayList();
+
+        for (int i = 0; i < partido.size(); i++) {
+            escaño.add(new Escaño(partido.get(i).getId()));
+        }
+
+        for (int i = 0; i < escaños; i++) {
+            for (int j = 0; j < partido.size(); j++) {
+                if (partido.get(j).getVotos() > mayor) {
+
+                    mayor = partido.get(j).getVotos();
+                    mayorId = partido.get(j).getId();
+                    maxIndice = j;
+                }
+                if (j == partido.size() - 1) {
+                    partido.get(maxIndice).setVotos(partido.get(maxIndice).getVotos() / 2);
+                }
+            }
+            mayor = 0;
+
+            for (int a = 0; a < escaño.size(); a++) {
+                if (escaño.get(a).getId_partido() == mayorId) {
+                    escaño.get(a).setNumEscaños(escaño.get(a).getNumEscaños() + 1);
+                }
+            }
+            //resultado[i]=mayorSigla;
+        }
+        return escaño;
+    }
+
+    public int registroEscaño(ArrayList<Escaño> escaño, Connection conexion) throws ApplicationException {
+        try {
+            int eee=escaño.get(0).getId_partido();
+            int aaa=escaño.get(0).getNumEscaños();
+            int resultado=0;
+            for(int i=0;i<escaño.size();i++){
+                int id_partido=escaño.get(i).getId_partido();
+                int escaños=escaño.get(i).getNumEscaños();
+                String orden = "INSERT INTO escaño VALUES(null,'"+escaños+"','"+id_partido+"');";
+                Statement s = conexion.createStatement();
+                resultado = s.executeUpdate(orden);
+            }
+            return resultado;
+        } catch (SQLException e) {
+            throw new ApplicationException(e.getMessage(), 0, "errpr");
+            
+        }
+
+    }
+    
+    public boolean escrutinio(Connection conexion) throws ApplicationException{
+        try {
+            String abierto="";
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery("SELECT escrutinioAbierto FROM parametros");
+            if(rs.first()){
+                abierto=rs.getString("escrutinioAbierto");
+            }else return false;
+            if (abierto.equals("S")) {
+                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set escrutinioAbierto='N'");
+                int resultado=pre.executeUpdate();
+                if (resultado==1) {
+                    return true;
+                }else return false;
+            }
+            if (abierto.equals("N")) {
+                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set escrutinioAbierto='S'");
+                int resultado=pre.executeUpdate();
+                if (resultado==1) {
+                    return true;
+                }else return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new ApplicationException("Error abriendo/cerrando escrutinio", e.getErrorCode(), e.getMessage());
+        }
+        
+    }
+    public boolean consulta(Connection conexion) throws ApplicationException{
+    
+        try {
+            String abierto="";
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery("SELECT consultaAbierta FROM parametros");
+            if(rs.first()){
+                abierto=rs.getString("consultaAbierta");
+            }else return false;
+            if (abierto.equals("S")) {
+                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set consultaAbierta='N'");
+                int resultado=pre.executeUpdate();
+                if (resultado==1) {
+                    return true;
+                }else return false;
+            }
+            if (abierto.equals("N")) {
+                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set consultaAbierta='S'");
+                int resultado=pre.executeUpdate();
+                if (resultado==1) {
+                    return true;
+                }else return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            throw new ApplicationException("Error abriendo/cerrando consulta", e.getErrorCode(), e.getMessage());
+        }
+    
+        }
+ 
+        
+    
 }

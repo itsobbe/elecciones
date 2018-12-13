@@ -16,7 +16,7 @@
     <title>elecciones</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link rel="stylesheet" href="../CSS/assets/css/styles.min.css">
 </head>
 
 <body>
@@ -62,7 +62,7 @@
                 </div>
                 <% } %>
                 <div class="form-row">
-                    <div class="col offset-8 d-flex justify-content-center"><button class="btn btn-primary flex-column" type="submit">Button</button></div>
+                    <div class="col offset-8 d-flex justify-content-center"><button class="btn btn-primary flex-column" type="submit">Votar</button></div>
                 </div>
             </div>
         </form>

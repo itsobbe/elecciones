@@ -11,22 +11,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
-import modelo.Votante;
 import modelo.Partido;
 
 /**
  *
  * @author owa_7
  */
-public class ControladorVotar extends HttpServlet {
-
+public class ControladorMostrarResultadoVotos extends HttpServlet {
     private Connection Conexion;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,7 +34,7 @@ public class ControladorVotar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+            @Override
     public void init() throws ServletException {
         super.init();
         /* Establecemos la conexión, si no existe */
@@ -47,25 +45,20 @@ public class ControladorVotar extends HttpServlet {
         } catch (SQLException sqle) {
         }
     }
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            int id= Integer.parseInt(request.getParameter("elegido"));
-            Partido partido = new Partido(id);
-            Votante votante=(Votante)request.getSession().getAttribute("votante");
             try {
-              
-              int res=new Operaciones().votar(votante,partido, Conexion);
-              ((Votante)(request.getSession().getAttribute("votante"))).setVotado("S");
-              String mensaje="Gracias por votar, su voto se ha registrado con éxito";
-              response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
-              
+                ArrayList<Partido> partido=new ArrayList();
+                partido=new Operaciones().devuelvePartidos(Conexion);
+                request.getSession().setAttribute("partidosVotos", partido);
+                response.sendRedirect("VISTAS/VistaResultadoVotos.jsp");
+                //redireccion vista exito
+                
             } catch (ApplicationException e) {
-                //hacer catch de error para dirigir a la vista error
-                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+                //redireccion error
             }
             
             
@@ -73,10 +66,10 @@ public class ControladorVotar extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorVotar</title>");
+            out.println("<title>Servlet ControladorMostrarResultadoVotos</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ControladorVotar at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ControladorMostrarResultadoVotos at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

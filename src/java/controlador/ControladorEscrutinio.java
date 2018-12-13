@@ -16,17 +16,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
-import modelo.Votante;
-import modelo.Partido;
 
 /**
  *
  * @author owa_7
  */
-public class ControladorVotar extends HttpServlet {
 
+public class ControladorEscrutinio extends HttpServlet {
     private Connection Conexion;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,7 +33,7 @@ public class ControladorVotar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+        @Override
     public void init() throws ServletException {
         super.init();
         /* Establecemos la conexión, si no existe */
@@ -47,36 +44,34 @@ public class ControladorVotar extends HttpServlet {
         } catch (SQLException sqle) {
         }
     }
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            int id= Integer.parseInt(request.getParameter("elegido"));
-            Partido partido = new Partido(id);
-            Votante votante=(Votante)request.getSession().getAttribute("votante");
+            
             try {
-              
-              int res=new Operaciones().votar(votante,partido, Conexion);
-              ((Votante)(request.getSession().getAttribute("votante"))).setVotado("S");
-              String mensaje="Gracias por votar, su voto se ha registrado con éxito";
-              response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
-              
+                boolean hecho=new Operaciones().escrutinio(Conexion);
+                String f="fdf";
+                //redireccion vista exito
+                String mensaje="Escrutinio actualizado correctamente";
+                response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
             } catch (ApplicationException e) {
-                //hacer catch de error para dirigir a la vista error
+                //redireccion error
                 response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }
+            
+            
             
             
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ControladorVotar</title>");
+            out.println("<title>Servlet ControladorEscrutinio</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ControladorVotar at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ControladorEscrutinio at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

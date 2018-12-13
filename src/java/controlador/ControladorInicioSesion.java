@@ -58,18 +58,19 @@ public class ControladorInicioSesion extends HttpServlet {
             String contraseña=request.getParameter("contrasena");
             
             try {
-                //llamada a la funcion que si el usuario existe me devuelve un objeto y si no me lanza un excepcion
-            Votante obj=new Operaciones().inicioSesion(nif, contraseña, Conexion);
-            HttpSession session=request.getSession(true);
-            session.setAttribute("votante", obj);
-            session.setAttribute("usuario", contraseña);
-            session.setAttribute("password", nif);
-            //ahora devuelto el objeto segun el rol que tenga lo mandamos a una vista u otra
-            if (obj.getRol().equals("votante")) {
-                response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
-            }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
+                    //llamada a la funcion que si el usuario existe me devuelve un objeto y si no me lanza un excepcion
+                    Votante obj=new Operaciones().inicioSesion(nif, contraseña, Conexion);
+                    HttpSession session=request.getSession(true);
+                    session.setAttribute("votante", obj);
+                    session.setAttribute("usuario", contraseña);
+                    session.setAttribute("password", nif);
+                //ahora devuelto el objeto segun el rol que tenga lo mandamos a una vista u otra
+                if (obj.getRol().equals("votante")) {
+                    response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
+                     }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
             } catch (ApplicationException e) {
                 //vista mensaje error sin menu arriba
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }
             
             

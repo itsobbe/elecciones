@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
 import modelo.Partido;
+import modelo.Votante;
+import sun.applet.AppletIOException;
 
 /**
  *
@@ -50,7 +52,13 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            
+            //(Votante)(request.getSession().getAttribute("Votante"))
+            String votado=((Votante)request.getSession().getAttribute("votante")).getVotado();
+            if (votado.equals("S")) {
+                String e="Error: Ya ha votado";
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+                        
+            }
             try {
                 ArrayList<Partido> i=new ArrayList();
                 i=new Operaciones().devuelvePartidos(Conexion);

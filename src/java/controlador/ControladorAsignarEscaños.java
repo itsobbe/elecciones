@@ -11,10 +11,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.ApplicationException;
+import modelo.Escaño;
 import modelo.Partido;
 
 /**
@@ -49,8 +52,19 @@ public class ControladorAsignarEscaños extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            Partido[] partido= new Operaciones().devuelvePartidosArray(Conexion);
-            Partido resultado[]=new Operaciones().escaños(partido);
+
+            try {
+                //Partido[] partido= new Operaciones().devuelvePartidosArray(Conexion);
+                //Partido resultado[]=new Operaciones().escaños(partido);
+                //poner trasaccion aquí aunque solo la utilizo en el registro de escaños
+                 ArrayList<Partido> partido=new Operaciones().devuelvePartidosRecuento(Conexion);
+                 ArrayList<Escaño> escaño=new Operaciones().resultadoEscaño(partido);
+                 int resultado=new Operaciones().registroEscaño(escaño, Conexion);
+                 
+            } catch (ApplicationException e) {
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+            }
+             
             String g="";
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");

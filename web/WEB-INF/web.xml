@@ -32,6 +32,18 @@
         <servlet-name>ControladorAsignarEscaños</servlet-name>
         <servlet-class>controlador.ControladorAsignarEscaños</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorEscrutinio</servlet-name>
+        <servlet-class>controlador.ControladorEscrutinio</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorConsulta</servlet-name>
+        <servlet-class>controlador.ControladorConsulta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorMostrarResultadoVotos</servlet-name>
+        <servlet-class>controlador.ControladorMostrarResultadoVotos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorRegistroVotante</servlet-name>
         <url-pattern>/ControladorRegistroVotante</url-pattern>
@@ -63,6 +75,18 @@
     <servlet-mapping>
         <servlet-name>ControladorAsignarEscaños</servlet-name>
         <url-pattern>/ControladorAsignarEsca_os</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorEscrutinio</servlet-name>
+        <url-pattern>/ControladorEscrutinio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorConsulta</servlet-name>
+        <url-pattern>/ControladorConsulta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorMostrarResultadoVotos</servlet-name>
+        <url-pattern>/ControladorMostrarResultadoVotos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
