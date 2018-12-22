@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
+import modelo.Parametros;
 import modelo.Partido;
 import modelo.Votante;
 import sun.applet.AppletIOException;
@@ -53,13 +54,30 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             //(Votante)(request.getSession().getAttribute("Votante"))
-            String votado=((Votante)request.getSession().getAttribute("votante")).getVotado();
-            if (votado.equals("S")) {
-                String e="Error: Ya ha votado";
-                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
-                        
-            }
+            
             try {
+//                if (votado.equals("S")) {
+//                String error="Erro Ya ha votado";
+//                //response.sendRedirect("VISTAS/VistaMensajeError.jsp");
+//                throw new ApplicationException(error, 0, "");
+//                }
+                String votado=((Votante)request.getSession().getAttribute("votante")).getVotado();
+                Votante votante = (Votante) request.getSession().getAttribute("votante");
+                Parametros parametro = (Parametros) request.getSession().getAttribute("parametros");
+                if (votante.getVotado().equals("S")) {
+                    String mensaje = "No puede votar unza vez votado";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
+                    return;
+                }else if (parametro.getConsultaAbierta().equals("N")) {
+                    String mensaje = "No puede votar con consulta cerrada";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
+                    return;
+                }else if (parametro.getEscrutinioAbierto().equals("N")) {
+                    String mensaje = "No puede votar con escrutinio cerrado";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
+                    return;
+                }
+
                 ArrayList<Partido> i=new ArrayList();
                 i=new Operaciones().devuelvePartidos(Conexion);
                 request.getSession().setAttribute("partido", i);
@@ -70,15 +88,15 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
             }
             
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControladorCargarDatosVistaVotar</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControladorCargarDatosVistaVotar at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ControladorCargarDatosVistaVotar</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ControladorCargarDatosVistaVotar at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
         }
     }
 

@@ -58,9 +58,10 @@ public class ControladorAsignarEscaños extends HttpServlet {
                 //Partido resultado[]=new Operaciones().escaños(partido);
                 //poner trasaccion aquí aunque solo la utilizo en el registro de escaños
                  ArrayList<Partido> partido=new Operaciones().devuelvePartidosRecuento(Conexion);
-                 ArrayList<Escaño> escaño=new Operaciones().resultadoEscaño(partido);
+                 ArrayList<Escaño> escaño=new Operaciones().resultadoEscaño(partido,Conexion);
                  int resultado=new Operaciones().registroEscaño(escaño, Conexion);
-                 
+                 String mensaje="Escaños correctamente asignados";
+                 response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
             } catch (ApplicationException e) {
                 response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }

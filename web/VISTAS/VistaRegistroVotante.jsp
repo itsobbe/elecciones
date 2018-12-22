@@ -24,29 +24,29 @@
             <div class="illustration"><i class="icon ion-ios-navigate" style="background-color:#ffffff;color:rgb(0,0,0);"></i></div>
             <div class="form-row">
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="text" name="nombre" placeholder="Nombre"></div>
+                    <div class="form-group"><input class="form-control" type="text" name="nombre" placeholder="Nombre" required=""></div>
                 </div>
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña"></div>
+                    <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña" required=""></div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="text" name="apellidos" placeholder="Apellidos"></div>
+                    <div class="form-group"><input class="form-control" type="text" name="apellidos" placeholder="Apellidos" required=""></div>
                 </div>
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF"></div>
+                    <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF" required=""></div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <div class="form-group"><input name="fechaNac" class="form-control" type="date"><small class="form-text text-muted">Introduzca fecha de nacimiento</small></div>
+                    <div class="form-group"><input name="fechaNac" class="form-control" type="date" required=""><small class="form-text text-muted">Introduzca fecha de nacimiento</small></div>
                 </div>
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="text" name="domicilio" placeholder="Domicilio"></div>
+                    <div class="form-group"><input class="form-control" type="text" name="domicilio" placeholder="Domicilio" required=""></div>
                 </div>
             </div>
-            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color:rgb(3,3,3);">Inicio de sesión</button></div><a href="#" class="forgot">Registrate</a>
+            <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color:rgb(3,3,3);">Inicio de sesión</button></div>
         </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

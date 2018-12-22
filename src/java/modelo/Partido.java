@@ -31,6 +31,15 @@ public class Partido {
         
     }
 
+    public Partido(int id,String denominacion, String siglas, String logo, int votos) {
+        this.id = id;
+        this.denominacion = denominacion;
+        this.siglas = siglas;
+        this.logo = logo;
+        this.votos = votos;
+    }
+    
+    
     public Partido(int id, int votos,String denominacion, String logo) {
         this.id = id;
         this.denominacion = denominacion;

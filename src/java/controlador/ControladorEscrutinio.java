@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
+import modelo.Parametros;
 
 /**
  *
@@ -49,10 +50,13 @@ public class ControladorEscrutinio extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            
+            int id=Integer.parseInt(request.getParameter("id"));
             try {
-                boolean hecho=new Operaciones().escrutinio(Conexion);
-                String f="fdf";
+                new Operaciones().escrutinioV2(id,Conexion);
+                if (id ==1) {
+                    ((Parametros)request.getSession().getAttribute("parametros")).setEscrutinioAbierto("N");
+                }else ((Parametros)request.getSession().getAttribute("parametros")).setEscrutinioAbierto("S");
+                
                 //redireccion vista exito
                 String mensaje="Escrutinio actualizado correctamente";
                 response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);

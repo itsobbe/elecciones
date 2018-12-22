@@ -13,3 +13,13 @@ menu votante: baja modificar datos mostrar resultados ver escaños
 -- 
 
 en inicio sesion registro devolver obj completo
+
+
+
+poner gráficas para mostrar escaños
+
+problemas con response.sendRedirect() => vuelve por lo que si tienes varios redirect da error interno
+, si le pone return ya se queda donde lo hayas mandando.
+
+vista modificar datos contraseña? traerla y ponerla en value :mal! porque con inspeccionar se vería => solución
+    - dejarlo vacío y ponerle require asi siempre la tiene que poner

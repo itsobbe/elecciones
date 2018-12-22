@@ -20,8 +20,8 @@
             <form action="../ControladorInicioSesion" method="POST">
                 <h2 class="sr-only">Login Form</h2>
                 <div class="illustration"><i class="icon ion-ios-navigate" style="color:rgb(0,0,0);"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF"></div>
-                <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña"></div>
+                <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF" required=""></div>
+                <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña" required=""></div>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color:rgb(0,0,0);">Inicio de sesión</button></div><a href="VistaRegistroVotante.jsp" class="forgot">Registrate</a></form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

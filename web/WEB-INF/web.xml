@@ -44,6 +44,10 @@
         <servlet-name>ControladorMostrarResultadoVotos</servlet-name>
         <servlet-class>controlador.ControladorMostrarResultadoVotos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorMostrarResultadoElegidos</servlet-name>
+        <servlet-class>controlador.ControladorMostrarResultadoElegidos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorRegistroVotante</servlet-name>
         <url-pattern>/ControladorRegistroVotante</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>ControladorMostrarResultadoVotos</servlet-name>
         <url-pattern>/ControladorMostrarResultadoVotos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorMostrarResultadoElegidos</servlet-name>
+        <url-pattern>/ControladorMostrarResultadoElegidos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

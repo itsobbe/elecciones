@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelo.ApplicationException;
+import modelo.Parametros;
 import modelo.Votante;
 
 /**
@@ -64,13 +65,21 @@ public class ControladorInicioSesion extends HttpServlet {
                     session.setAttribute("votante", obj);
                     session.setAttribute("usuario", contraseña);
                     session.setAttribute("password", nif);
+                    
+                    //gurdamos los parametros generales en sesion
+                    Parametros parametro=new Operaciones().devuelveParametros(Conexion);
+                    session.setAttribute("parametros", parametro);
                 //ahora devuelto el objeto segun el rol que tenga lo mandamos a una vista u otra
-                if (obj.getRol().equals("votante")) {
+//                if (obj.getRol().equals("votante")) {
+//                    response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
+//                     }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
+
+                    //ya controlo que menú se muestra en el el include de menu
                     response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
-                     }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
             } catch (ApplicationException e) {
                 //vista mensaje error sin menu arriba
-                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?id=1&error="+e);
+                return;
             }
             
             

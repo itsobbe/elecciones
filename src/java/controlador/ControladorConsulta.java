@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
+import modelo.Parametros;
 
 /**
  *
@@ -50,7 +51,13 @@ public class ControladorConsulta extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             try {
-                boolean hecho=new Operaciones().consulta(Conexion);
+                int id=Integer.parseInt(request.getParameter("id"));
+                new Operaciones().consultav2(id,Conexion);
+                if (id ==1) {
+                    ((Parametros)request.getSession().getAttribute("parametros")).setConsultaAbierta("N");
+                }else ((Parametros)request.getSession().getAttribute("parametros")).setConsultaAbierta("S");
+                
+                
                 String mensaje="Consulta actualizada correctamente";
                 response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
             } catch (ApplicationException e) {
