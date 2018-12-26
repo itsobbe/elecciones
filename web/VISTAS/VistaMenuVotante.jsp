@@ -3,17 +3,35 @@
     Created on : 21-nov-2018, 17:42:49
     Author     : owa_7
 --%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="modelo.Parametros"%>
+<%@page import="modelo.Votante"%>
 <jsp:include page="pruebaMenu.jsp"></jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 
 <body>
+    <div class="container">
 
-    <div class="d-flex flex-column m-auto" style="height:500px;width:650px;">
-        <h1 class="text-center">Bienvenido a las elecciones</h1><img class="d-flex align-items-center m-auto" src="../CSS/assets/img/elecciones-votos.jpg" height="250px" style="/*display:inline-block;*/">
+
+        <div class="card text-center ">
+            <img class="card-img-top" src="../CSS/assets/img/urna.png" alt="Card image cap" height="250px">
+            <div class="card-header">
+                Bienvenido a las elecciones <span class="badge badge-info"><%= ((Votante) session.getAttribute("votante")).getNombre()%></span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Ambito: <%= ((Parametros) session.getAttribute("parametros")).getTipoConsulta()%></h5>
+                <p class="card-text"><%= ((Parametros) session.getAttribute("parametros")).getCircunscripcion()%></p>
+                <p class="card-text">Nº de escaños: <%= ((Parametros) session.getAttribute("parametros")).getNumCandidatos()%></p>
+
+            </div>
+            <div class="card-footer text-muted">
+                Comienzo con fecha: <%= ((Parametros) session.getAttribute("parametros")).getFechaConsulta().format(DateTimeFormatter.ofPattern("d MMM uuu"))%>
+            </div>
+        </div>
     </div>
-
+    
 </body>
 
 </html>

@@ -3,6 +3,8 @@
     Created on : 27-nov-2018, 10:31:44
     Author     : owa_7
 --%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="modelo.Parametros"%>
 <jsp:include page="pruebaMenu.jsp"></jsp:include>
 <%@page import="modelo.Partido"%>
 <%@page import="java.util.ArrayList"%>
@@ -23,7 +25,7 @@
         <form action="../ControladorVotar">
             <div class="card" style="margin:20px;">
                 <div class="card-header">
-                    <p>Elecciones 2019 de albacete</p>
+                    <p>Elecciones <%=  ((Parametros)session.getAttribute("parametros")).getCircunscripcion()%> <%= ((Parametros)session.getAttribute("parametros")).getFechaConsulta().format(DateTimeFormatter.ofPattern("dd-MM-YYYY")) %> </p>
                 </div>
                 <% for(Partido a:partidos){
                     

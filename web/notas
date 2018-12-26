@@ -23,3 +23,6 @@ problemas con response.sendRedirect() => vuelve por lo que si tienes varios redi
 
 vista modificar datos contraseña? traerla y ponerla en value :mal! porque con inspeccionar se vería => solución
     - dejarlo vacío y ponerle require asi siempre la tiene que poner
+
+
+ordenar array final de escaños : hecho

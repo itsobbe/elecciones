@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import modelo.ApplicationException;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import modelo.Candidato;
 import modelo.Escaño;
 import modelo.Parametros;
@@ -284,7 +286,7 @@ public class Operaciones {
 
     }
 
-    public ArrayList<Escaño> resultadoEscaño(ArrayList<Partido> partido,Connection conexion) throws ApplicationException { //usado
+    public ArrayList<Escaño> resultadoEscaño(ArrayList<Partido> partido, Connection conexion) throws ApplicationException { //usado
         //metodo para calcular escaños segun votos
         int escaños = 0;
         int mayorId = 0;
@@ -293,17 +295,17 @@ public class Operaciones {
         ArrayList<Escaño> escaño = new ArrayList();
 
         try {
-            Statement s=conexion.createStatement();
-            ResultSet rs=s.executeQuery("Select numCandidatos from parametros");
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery("Select numCandidatos from parametros");
             if (rs.first()) {
-                escaños=rs.getInt("numCandidatos");
-            }else throw new ApplicationException("Error", 0, "sacando el numero de escaños disponibles");
+                escaños = rs.getInt("numCandidatos");
+            } else {
+                throw new ApplicationException("Error", 0, "sacando el numero de escaños disponibles");
+            }
         } catch (SQLException e) {
             throw new ApplicationException("Error", e.getErrorCode(), e.getMessage());
         }
-        
-        
-        
+
         for (int i = 0; i < partido.size(); i++) {
             escaño.add(new Escaño(partido.get(i).getId()));
         }
@@ -507,7 +509,7 @@ public class Operaciones {
         ArrayList<PartidoCandidato> arrayPartido = new ArrayList();
         PartidoCandidato partido = new PartidoCandidato();
         ArrayList<Candidato> candidato = new ArrayList();
-        boolean hecho=false;
+        boolean hecho = false;
         try {
             s = conexion.createStatement();
             rs = s.executeQuery("select * from partido p,escaño e where p.id=e.id_partido");
@@ -515,27 +517,32 @@ public class Operaciones {
                 partido = new PartidoCandidato(rs.getInt("numEscaños"), rs.getInt("id"), rs.getString("denominacion"), rs.getString("siglas"), rs.getString("logo"), rs.getInt("votos"));
                 arrayPartido.add(partido);
             }
-                s1 = conexion.createStatement();
-                rs2 = s.executeQuery("select c.* from partido p,candidatos c where p.id=c.id_partido");
-                if (rs2.isBeforeFirst()) {
-                    while (rs2.next()) {
-                        candidato.add(new Candidato(rs2.getString("nombre_apellidos"), rs2.getInt("orden"),rs2.getInt("id_partido")));
-                    }
+            s1 = conexion.createStatement();
+            rs2 = s.executeQuery("select c.* from partido p,candidatos c where p.id=c.id_partido");
+            if (rs2.isBeforeFirst()) {
+                while (rs2.next()) {
+                    candidato.add(new Candidato(rs2.getString("nombre_apellidos"), rs2.getInt("orden"), rs2.getInt("id_partido")));
                 }
+            }
             for (int i = 0; i < arrayPartido.size(); i++) {
 
-                    hecho=false;
-                    for (int k = 0; k < candidato.size() && !hecho; k++) {
-                        int a=arrayPartido.get(i).getId();
-                        int b=candidato.get(k).getId_partido();
-                        if (arrayPartido.get(i).getId() == candidato.get(k).getId_partido()) {
-                            arrayPartido.get(i).setCandidato(candidato.get(k));
-                         }
-                         if (arrayPartido.get(i).getCandidatos().size()>=arrayPartido.get(i).getEscaños()) {
-                            hecho=true;
-                        }
+                hecho = false;
+                for (int k = 0; k < candidato.size() && !hecho; k++) {
+                    int a = arrayPartido.get(i).getId();
+                    int b = candidato.get(k).getId_partido();
+                    if (arrayPartido.get(i).getId() == candidato.get(k).getId_partido()) {
+                        arrayPartido.get(i).setCandidato(candidato.get(k));
                     }
+                    if (arrayPartido.get(i).getCandidatos().size() >= arrayPartido.get(i).getEscaños()) {
+                        hecho = true;
+                    }
+                }
             }
+            //ordena ascendiente
+//           arrayPartido.sort((PartidoCandidato s11, PartidoCandidato s2)->s11.getEscaños()-s2.getEscaños());
+            //ordena descendiente
+            Collections.sort(arrayPartido,
+                    Comparator.comparingInt(PartidoCandidato::getEscaños).reversed());
             return arrayPartido;
         } catch (SQLException e) {
             throw new ApplicationException("Error", e.getErrorCode(), e.getMessage());

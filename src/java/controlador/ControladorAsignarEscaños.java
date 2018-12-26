@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.ApplicationException;
 import modelo.Escaño;
+import modelo.Parametros;
 import modelo.Partido;
 
 /**
@@ -54,6 +55,12 @@ public class ControladorAsignarEscaños extends HttpServlet {
             
 
             try {
+                
+                if (((Parametros)request.getSession().getAttribute("parametros")).getEscrutinioAbierto().equals("S")) {
+                    String e="Escrutinio aun en proceso";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+                    return;
+                }
                 //Partido[] partido= new Operaciones().devuelvePartidosArray(Conexion);
                 //Partido resultado[]=new Operaciones().escaños(partido);
                 //poner trasaccion aquí aunque solo la utilizo en el registro de escaños

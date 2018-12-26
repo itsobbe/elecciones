@@ -4,47 +4,64 @@
     Author     : owa_7
 --%>
 
+<%@page import="modelo.PartidoCandidato"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
+<%@ page import="java.util.*" %>
+<%@ page import="com.google.gson.Gson"%>
+<%@ page import="com.google.gson.JsonObject"%>
+<%
+    ArrayList<PartidoCandidato> array = (ArrayList<PartidoCandidato>) session.getAttribute("partidoCandidato");
+
+    Gson gsonObj = new Gson();
+    Map<Object, Object> map = null;
+    List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+
+    for (PartidoCandidato a : array) {
+        map = new HashMap<Object, Object>();
+        map.put("label", a.getDenominacion());
+        map.put("y", a.getEscaños());
+        map.put("exploded", true);
+        list.add(map);
+    }
+    String dataPoints = gsonObj.toJson(list);
+%>
+
+<!DOCTYPE HTML>
 <html>
-<head>
-<script>
-window.onload = function() {
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript">
+            window.onload = function () {
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	theme: "light2", // "light1", "light2", "dark1", "dark2"
-	exportEnabled: true,
-	animationEnabled: true,
-	title: {
-		text: "Desktop Browser Market Share in 2016"
-	},
-	data: [{
-		type: "pie",
-		startAngle: 25,
-		toolTipContent: "<b>{label}</b>: {y}%",
-		showInLegend: "true",
-		legendText: "{label}",
-		indexLabelFontSize: 16,
-		indexLabel: "{label} - {y}%",
-		dataPoints: [
-                    
-			{ y: 51.08, label: "'<%= "dd" %>" },
-			{ y: 27.34, label: "Internet Explorer" },
-			{ y: 10.62, label: "Firefox" },
-			{ y: 5.02, label: "Microsoft Edge" },
-			{ y: 4.07, label: "Safari" },
-			{ y: 1.22, label: "Opera" },
-			{ y: 0.44, label: "Others" }
-		]
-	}]
-});
-chart.render();
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    theme: "light2",
+                    animationEnabled: true,
+                    exportFileName: "New Year Resolutions",
+                    exportEnabled: true,
+                    title: {
+                        text: "Top Categories of New Year's Resolution"
+                    },
+                    data: [{
+                            type: "pie",
+                            showInLegend: true,
+                            legendText: "{label}",
+                            toolTipContent: "{label}: <strong>{y}%</strong>",
+                            indexLabel: "{label} {y}%",
+                            dataPoints: <%out.print(dataPoints);%>
+                        }]
+                });
 
-}
-</script>
-</head>
-<body>
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-</body>
+                chart.render();
+
+            }
+        </script>
+    </head>
+    <body>
+        <div >
+            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        </div>
+        
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    </body>
 </html>
