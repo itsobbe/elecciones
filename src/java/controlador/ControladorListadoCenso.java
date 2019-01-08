@@ -60,12 +60,17 @@ public class ControladorListadoCenso extends HttpServlet {
                 //guardamos en session el array para pasarlo a la vista de listado censo y mostrarlo
                 HttpSession session = request.getSession(true);
                 session.setAttribute("arrayListadoCenso", listado);
+                
                 if (listado != null) {
                     response.sendRedirect("VISTAS/VistaListadoCenso.jsp");
+                    return;
+                }else{
+                    String error="No hay datos para mostrar";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+error);
                 }
             } catch (ApplicationException e) {
-                //mandamos a vista mensaje error ! arreglar
-                response.sendRedirect("VISTAS/VistaMensajeError.jsp");
+                //mandamos a vista mensaje error
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }
 
             /* TODO output your page here. You may use following sample code. */

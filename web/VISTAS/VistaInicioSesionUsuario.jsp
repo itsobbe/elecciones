@@ -15,14 +15,19 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <link rel="stylesheet" href="../CSS/assets/css/styles.min.css">
     </head>
+        <style>
+    body{
+        background-color: #f1f7fc !important; 
+    }
+</style>
     <body>
         <div class="login-clean" style="height:720px;">
             <form action="../ControladorInicioSesion" method="POST">
-                <h2 class="sr-only">Login Form</h2>
+                <h2 class="sr-only">Formulario de login</h2>
                 <div class="illustration"><i class="icon ion-ios-navigate" style="color:rgb(0,0,0);"></i></div>
-                <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF" required=""></div>
+                <div class="form-group"><input class="form-control" type="text" name="nif" placeholder="NIF" required="" autofocus=""></div>
                 <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña" required=""></div>
-                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color:rgb(0,0,0);">Inicio de sesión</button></div><a href="VistaRegistroVotante.jsp" class="forgot">Registrate</a></form>
+                <div class="form-group"><button class="btn btn-primary btn-block" type="submit" style="background-color:rgb(0,0,0);">Inicio de sesión</button></div><a href="VistaRegistroVotante.jsp" class="forgot">Regístrate</a></form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>

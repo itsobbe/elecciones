@@ -26,3 +26,8 @@ vista modificar datos contraseña? traerla y ponerla en value :mal! porque con i
 
 
 ordenar array final de escaños : hecho
+    ordena ascendente=>
+         arrayPartido.sort((PartidoCandidato s11, PartidoCandidato s2)->s11.getEscaños()-s2.getEscaños());
+
+dudas/problemas con comprobar si la consulta a base de datos ha traido alguna fila porque al poner rs.fisrt se supone que el cursor
+se situa en la primera fila pero si utilizo para comprobarlo ya está ahi y al guardar datos no saldría esa fila ?? dudas

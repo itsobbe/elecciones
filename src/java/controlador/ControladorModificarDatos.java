@@ -51,13 +51,7 @@ public class ControladorModificarDatos extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            
-//            if (((Votante)request.getSession().getAttribute("votante")).getVotado().equals("S")) {
-//                    String mensaje="Una vez votado no se pueden cambiar los datos";
-//                    response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
-//                }
-            
+
             String nombre=request.getParameter("nombre");
             String nif=request.getParameter("nif");
             String contrasena=request.getParameter("contrasena");

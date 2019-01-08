@@ -37,8 +37,6 @@
 
 <!DOCTYPE html>
 <html>
-
-
     <script type="text/javascript">
         window.onload = function () {
 
@@ -65,11 +63,6 @@
         }
     </script>
     <body>
-        <%
-
-            //ArrayList<Partido> partidos = (ArrayList<Partido>) session.getAttribute("partidosVotos");
-
-        %>
         <!-- menu -->
         <div class="container" style="height:508px;">
             <form action="">
@@ -78,24 +71,19 @@
                         <p>Elecciones <%=  ((Parametros) session.getAttribute("parametros")).getCircunscripcion()%> <%= ((Parametros) session.getAttribute("parametros")).getFechaConsulta().format(DateTimeFormatter.ofPattern("dd-MM-YYYY"))%> </p>
                     </div>
                     <% for (Partido a : array) {
-
                     %>
                     <div class="form-row">
                         <div class="col d-flex justify-content-center"><img src="<%= a.getLogo()%>" style="height:112px;width:181px;border-radius:50px;"></div>
                         <div class="col d-flex justify-content-center align-items-center">
-                                <p><%= //out.print(a.getDenominacion()) ;
-                                    a.getDenominacion()%></p>
+                            <p><%=a.getDenominacion()%></p>
                         </div>
-                        <div class="col d-flex justify-content-center align-items-center"><input name="votos" value="<%= a.getVotos()%>" type="text"></div>
+                        <div class="col d-flex justify-content-center align-items-center"><span class="badge badge-pill badge-info"><%= a.getVotos()%> votos</span></div>
                     </div>
                     <% }%>
-
                 </div>
             </form>
             <div id="chartContainer" style="height: 370px; width: 100%;"></div>
         </div>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
     </body>
-
 </html>

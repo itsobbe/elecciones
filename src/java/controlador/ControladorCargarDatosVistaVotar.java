@@ -52,15 +52,8 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            //(Votante)(request.getSession().getAttribute("Votante"))
-            
+
             try {
-//                if (votado.equals("S")) {
-//                String error="Erro Ya ha votado";
-//                //response.sendRedirect("VISTAS/VistaMensajeError.jsp");
-//                throw new ApplicationException(error, 0, "");
-//                }
                 String votado=((Votante)request.getSession().getAttribute("votante")).getVotado();
                 Votante votante = (Votante) request.getSession().getAttribute("votante");
                 Parametros parametro = (Parametros) request.getSession().getAttribute("parametros");
@@ -81,7 +74,6 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
                 ArrayList<Partido> i=new ArrayList();
                 i=new Operaciones().devuelvePartidos(Conexion);
                 request.getSession().setAttribute("partido", i);
-//                request.getSession().setAttribute("partido", new Operaciones().devuelvePartidos(Conexion));
                 response.sendRedirect("VISTAS/VistaVotar.jsp");
             } catch (ApplicationException e) {
                  response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);

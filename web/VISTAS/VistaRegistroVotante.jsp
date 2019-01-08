@@ -15,7 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="../CSS/assets/css/styles.min.css">
 </head>
-
+    <style>
+    body{
+        background-color: #f1f7fc !important; 
+    }
+</style>
 <body>
     <div class="login-clean" style="height:720px;">
         <form action="../ControladorRegistroVotante" method="POST" style="width:430px;padding:21px;">
@@ -24,7 +28,7 @@
             <div class="illustration"><i class="icon ion-ios-navigate" style="background-color:#ffffff;color:rgb(0,0,0);"></i></div>
             <div class="form-row">
                 <div class="col">
-                    <div class="form-group"><input class="form-control" type="text" name="nombre" placeholder="Nombre" required=""></div>
+                    <div class="form-group"><input class="form-control" type="text" name="nombre" placeholder="Nombre" required="" autofocus=""></div>
                 </div>
                 <div class="col">
                     <div class="form-group"><input class="form-control" type="password" name="contrasena" placeholder="Contraseña" required=""></div>

@@ -65,22 +65,22 @@ public class ControladorBajaVotante extends HttpServlet {
                     if (parametro.getConsultaAbierta().equals("N")) {
                         String mensaje = "No puede darse de baja con consulta cerrada";
                         response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
+                        return;
                         
                     }
                     if (parametro.getEscrutinioAbierto().equals("N")) {
                         String mensaje = "No puede darse de baja con escrutinio cerrado";
                         response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
-                        
+                        return;
                     }
-                    //llamammos funcion
-                    String no = "no puede";
-                    String ami = "amigo";
+                    //llamamos funcion
                     boolean resultado = new Operaciones().darBajaVotante(votante, Conexion);
                     response.sendRedirect("VISTAS/VistaInicioSesionUsuario.jsp");
+                    return;
                 } else {
                     String mensaje = "No puede darse de baja unza vez votado";
                     response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
-                    
+                    return;
                 }
             } catch (ApplicationException e) {
                 response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + e);

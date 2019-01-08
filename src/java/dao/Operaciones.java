@@ -30,7 +30,7 @@ import modelo.PartidoCandidato;
  */
 public class Operaciones {
 
-    public boolean insertarVotante(Connection conexion, Votante votante) throws SQLException {
+    public boolean insertarVotante(Connection conexion, Votante votante) throws SQLException, ApplicationException {
         try {
             String sql = "insert into votante values(null,?,AES_ENCRYPT(?,'oualid'),?,?,?,?,'N','votante')";
             PreparedStatement prestm = conexion.prepareStatement(sql);
@@ -44,12 +44,11 @@ public class Operaciones {
             int resultado = prestm.executeUpdate();
             if (resultado == 1) {
                 return true;
-            }
-
-        } catch (Exception e) {
-            return false;
+            }else throw new ApplicationException("Error", 0, "registrando votante");
+        } catch (SQLException e) {
+            throw new ApplicationException("Error", e.getErrorCode(), "registrando votante");
         }
-        return true;
+        
     }
 
     public Votante inicioSesion(String nif, String contraseña, Connection conexion) throws SQLException, ApplicationException {
@@ -75,7 +74,6 @@ public class Operaciones {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 array.add(new Votante(rs.getString("nombre"), rs.getString("apellidos"), rs.getString("domicilio"), LocalDate.parse(rs.getString("fechaNac")), rs.getString("nif"), rs.getString("rol"), rs.getString("votado")));
-//            array.add(new Votante(rs.getString("nif"),rs.getString("votado"),rs.getString("rol")));
             }
 
         } catch (SQLException e) {
@@ -222,7 +220,6 @@ public class Operaciones {
             ArrayList<Partido> a = new ArrayList();
             Statement s = conexion.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM partido");
-//            if (rs.next()) {
             while (rs.next()) {
                 a.add(new Partido(rs.getInt("id"), rs.getInt("votos")));
             }
@@ -295,6 +292,7 @@ public class Operaciones {
         ArrayList<Escaño> escaño = new ArrayList();
 
         try {
+            //consulto el numero de escaños a calcular
             Statement s = conexion.createStatement();
             ResultSet rs = s.executeQuery("Select numCandidatos from parametros");
             if (rs.first()) {
@@ -306,14 +304,22 @@ public class Operaciones {
             throw new ApplicationException("Error", e.getErrorCode(), e.getMessage());
         }
 
+        //para controlar que alguien tenga votos pongo un cont y si cont = 0 significa que no hay nadie con votos asi que error
+        int hayVotos = 0;
         for (int i = 0; i < partido.size(); i++) {
+            if (partido.get(i).getVotos() > 0) {
+                hayVotos++;
+            }
             escaño.add(new Escaño(partido.get(i).getId()));
         }
+        if (hayVotos == 0) {
+            throw new ApplicationException("Error", 0, "No hay votos, todos tienen 0");
+        }
 
+        //calculo quien recibe escaño
         for (int i = 0; i < escaños; i++) {
             for (int j = 0; j < partido.size(); j++) {
                 if (partido.get(j).getVotos() > mayor) {
-
                     mayor = partido.get(j).getVotos();
                     mayorId = partido.get(j).getId();
                     maxIndice = j;
@@ -323,13 +329,12 @@ public class Operaciones {
                 }
             }
             mayor = 0;
-
+            //asigno escaño
             for (int a = 0; a < escaño.size(); a++) {
                 if (escaño.get(a).getId_partido() == mayorId) {
                     escaño.get(a).setNumEscaños(escaño.get(a).getNumEscaños() + 1);
                 }
             }
-            //resultado[i]=mayorSigla;
         }
         return escaño;
     }
@@ -337,14 +342,12 @@ public class Operaciones {
     public int registroEscaño(ArrayList<Escaño> escaño, Connection conexion) throws ApplicationException {
         //metodo para registrar los escaños en la tabla
         try {
-
             String orden1 = "select * from escaño";
             Statement s1 = conexion.createStatement();
             ResultSet rs = s1.executeQuery(orden1);
             if (rs.first()) {
                 throw new ApplicationException("Error", 0, "Los escaños ya fueron asignados");
             }
-
             int resultado = 0;
             for (int i = 0; i < escaño.size(); i++) {
                 int id_partido = escaño.get(i).getId_partido();
@@ -356,43 +359,6 @@ public class Operaciones {
             return resultado;
         } catch (SQLException e) {
             throw new ApplicationException(e.getMessage(), e.getErrorCode(), "error");
-
-        }
-
-    }
-
-    public boolean escrutinio(Connection conexion) throws ApplicationException {
-        //metodo para abrir o cerrar escrutinio
-        try {
-            String abierto = "";
-            Statement s = conexion.createStatement();
-            ResultSet rs = s.executeQuery("SELECT escrutinioAbierto FROM parametros");
-            if (rs.first()) {
-                abierto = rs.getString("escrutinioAbierto");
-            } else {
-                return false;
-            }
-            if (abierto.equals("S")) {
-                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set escrutinioAbierto='N'");
-                int resultado = pre.executeUpdate();
-                if (resultado == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            if (abierto.equals("N")) {
-                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set escrutinioAbierto='S'");
-                int resultado = pre.executeUpdate();
-                if (resultado == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new ApplicationException("Error abriendo/cerrando escrutinio", e.getErrorCode(), e.getMessage());
         }
     }
 
@@ -419,42 +385,6 @@ public class Operaciones {
         } catch (SQLException e) {
             throw new ApplicationException("Error abriendo/cerrando escrutinio", e.getErrorCode(), e.getMessage());
         }
-    }
-
-    public boolean consulta(Connection conexion) throws ApplicationException {
-        //metodo para abrir o cerrar la consulta
-        try {
-            String abierto = "";
-            Statement s = conexion.createStatement();
-            ResultSet rs = s.executeQuery("SELECT consultaAbierta FROM parametros");
-            if (rs.first()) {
-                abierto = rs.getString("consultaAbierta");
-            } else {
-                return false;
-            }
-            if (abierto.equals("S")) {
-                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set consultaAbierta='N'");
-                int resultado = pre.executeUpdate();
-                if (resultado == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            if (abierto.equals("N")) {
-                PreparedStatement pre = conexion.prepareStatement("UPDATE parametros set consultaAbierta='S'");
-                int resultado = pre.executeUpdate();
-                if (resultado == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new ApplicationException("Error abriendo/cerrando consulta", e.getErrorCode(), e.getMessage());
-        }
-
     }
 
     public void consultav2(int peticion, Connection conexion) throws ApplicationException {
@@ -489,10 +419,6 @@ public class Operaciones {
             ResultSet rs = s.executeQuery("SELECT * from parametros");
             if (rs.first()) {
                 parametro = new Parametros(rs.getString("circunscripcion"), rs.getInt("numCandidatos"), rs.getString("tipoConsulta"), rs.getDate("fechaConsulta").toLocalDate(), rs.getString("escrutinioAbierto"), rs.getString("consultaAbierta"));
-//                    while(rs.next()){
-//                        //parametros.add(new Parametros(rs.getString("circunscripcion"),rs.getInt("numCandidatos"),rs.getString("tipoConsulta"),rs.getDate("fechaConsulta").toLocalDate(),rs.getString("escrutinioAbierto"),rs.getString("consultaAbierta")));
-//                        parametro=new Parametros(rs.getString("circunscripcion"),rs.getInt("numCandidatos"),rs.getString("tipoConsulta"),rs.getDate("fechaConsulta").toLocalDate(),rs.getString("escrutinioAbierto"),rs.getString("consultaAbierta"));
-//                    }
                 return parametro;
             } else {
                 throw new ApplicationException("Error", 0, "error devolviendo parametros generales");
@@ -538,9 +464,7 @@ public class Operaciones {
                     }
                 }
             }
-            //ordena ascendiente
-//           arrayPartido.sort((PartidoCandidato s11, PartidoCandidato s2)->s11.getEscaños()-s2.getEscaños());
-            //ordena descendiente
+            //ordena descendente
             Collections.sort(arrayPartido,
                     Comparator.comparingInt(PartidoCandidato::getEscaños).reversed());
             return arrayPartido;

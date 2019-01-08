@@ -66,14 +66,9 @@ public class ControladorInicioSesion extends HttpServlet {
                     session.setAttribute("usuario", contraseña);
                     session.setAttribute("password", nif);
                     
-                    //gurdamos los parametros generales en sesion
+                    //guardamos los parametros generales en sesion
                     Parametros parametro=new Operaciones().devuelveParametros(Conexion);
                     session.setAttribute("parametros", parametro);
-                //ahora devuelto el objeto segun el rol que tenga lo mandamos a una vista u otra
-//                if (obj.getRol().equals("votante")) {
-//                    response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
-//                     }else response.sendRedirect("VISTAS/VistaMenuAdmin.jsp");
-
                     //ya controlo que menú se muestra en el el include de menu
                     response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
             } catch (ApplicationException e) {

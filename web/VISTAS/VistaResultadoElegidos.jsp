@@ -81,16 +81,16 @@
                     <div class="form-row" style="margin-top: 10px;margin-bottom: 10px;">
                         <div class="col d-flex justify-content-center align-items-center"><img src="<%= a.getLogo()%>" style="height:112px;width:181px;border-radius:50px;"></div>
                         <div class="col d-flex justify-content-center align-items-center">
-                            <p><%= //out.print(a.getDenominacion()) ;
-                                        a.getDenominacion()%></p>
+                            <p><%= a.getDenominacion()%></p>
                         </div>
-                        <!--<div class="col d-flex justify-content-center align-items-center"><input name="votos" value="<%= a.getEscaños()%>" type="text"></div>-->
 
                         <div class="col d-flex justify-content-center align-items-center">
-                            <p>Total escaños: <%= //out.print(a.getDenominacion()) ;
-                                        a.getEscaños()%></p>
+                            <p>Total escaños:
+                                <span class="badge badge-pill badge-info">
+                                    <%=a.getEscaños()%>
+                                </span>
+                            </p>
                         </div>
-
                         <div class="card" style="width: 18rem;">
                             <div class="card-header">
                                 <p>Elegidos</p>
@@ -103,20 +103,14 @@
                                 <%}%>
                             </ul>
                         </div>
-
                     </div>
                     <% }%>
-
                 </div>
             </form>
-
             <div >
                 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
             </div>
-
-
         </div>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     </body>
-
 </html>

@@ -26,7 +26,9 @@ import modelo.Partido;
  * @author owa_7
  */
 public class ControladorAsignarEscaños extends HttpServlet {
+
     private Connection Conexion;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -52,28 +54,23 @@ public class ControladorAsignarEscaños extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
 
             try {
-                
-                if (((Parametros)request.getSession().getAttribute("parametros")).getEscrutinioAbierto().equals("S")) {
-                    String e="Escrutinio aun en proceso";
-                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+
+                if (((Parametros) request.getSession().getAttribute("parametros")).getEscrutinioAbierto().equals("S")) {
+                    String e = "Escrutinio aun en proceso";
+                    response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + e);
                     return;
                 }
-                //Partido[] partido= new Operaciones().devuelvePartidosArray(Conexion);
-                //Partido resultado[]=new Operaciones().escaños(partido);
-                //poner trasaccion aquí aunque solo la utilizo en el registro de escaños
-                 ArrayList<Partido> partido=new Operaciones().devuelvePartidosRecuento(Conexion);
-                 ArrayList<Escaño> escaño=new Operaciones().resultadoEscaño(partido,Conexion);
-                 int resultado=new Operaciones().registroEscaño(escaño, Conexion);
-                 String mensaje="Escaños correctamente asignados";
-                 response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje="+mensaje);
+                ArrayList<Partido> partido = new Operaciones().devuelvePartidosRecuento(Conexion);
+                ArrayList<Escaño> escaño = new Operaciones().resultadoEscaño(partido, Conexion);
+                int resultado = new Operaciones().registroEscaño(escaño, Conexion);
+                String mensaje = "Escaños correctamente asignados";
+                response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje=" + mensaje);
             } catch (ApplicationException e) {
-                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + e);
             }
-             
-            String g="";
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");

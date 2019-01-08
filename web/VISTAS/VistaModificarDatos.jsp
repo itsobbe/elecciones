@@ -16,7 +16,6 @@
     <body>
         <%
             Votante votante = (Votante) session.getAttribute("votante");
-
             if (votante.getVotado().equals("S")) {
                 String mensaje = "Una vez votado no se pueden cambiar los datos";
                 response.sendRedirect("VistaMensajeError.jsp?error=" + mensaje);
@@ -27,21 +26,6 @@
                 String mensaje="Escrutinio cerrado, no puede modificar datos";
                 response.sendRedirect("VistaMensajeError.jsp?error="+mensaje);
             }
-            /*
-            if (((Votante)request.getSession().getAttribute("votante")).getVotado().equals("S")) {
-                String mensaje="Una vez votado no se pueden cambiar los datos";
-                response.sendRedirect("VistaMensajeError.jsp?error="+mensaje);
-            }
-            if (((Parametros)request.getSession().getAttribute("parametros")).getConsultaAbierta().equals("N")) {
-                String mensaje="Consulta cerrada, no puede modificar datos";
-                response.sendRedirect("VistaMensajeError.jsp?error="+mensaje);
-            }
-            if (((Parametros)request.getSession().getAttribute("parametros")).getEscrutinioAbierto().equals("N")) {
-                String mensaje="Escrutinio cerrado, no puede modificar datos";
-                response.sendRedirect("VistaMensajeError.jsp?error="+mensaje);
-            }*/
-
-
         %>
 
         <div class="container d-flex justify-content-center" style="height:350px;">
@@ -73,7 +57,5 @@
                 <button class="btn btn-primary" type="submit">Button</button>
             </form>
         </div>
-
     </body>
-
 </html>

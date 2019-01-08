@@ -7,18 +7,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
-<head>
-    
-    
-</head>
-
 <body>
-
     <div class="container d-flex flex-column justify-content-center" style="height:350px;width:100vw;">
         <div class="alert alert-success" role="alert"><span><strong>Éxito </strong><% out.print(request.getParameter("mensaje")); %></span></div>
     </div>
-
 </body>
-
 </html>

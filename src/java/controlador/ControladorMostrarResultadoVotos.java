@@ -59,6 +59,7 @@ public class ControladorMostrarResultadoVotos extends HttpServlet {
                 
             } catch (ApplicationException e) {
                 //redireccion error
+                response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }
             
             

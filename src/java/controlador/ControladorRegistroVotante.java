@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import modelo.ApplicationException;
+import modelo.Parametros;
 import modelo.Votante;
 
 /**
@@ -68,16 +69,20 @@ public class ControladorRegistroVotante extends HttpServlet {
                 Operaciones o = new Operaciones();
                 Votante v = new Votante(nombre, apellidos, domicilio, fechaNac, contraseña, nif);
                 boolean resultado = o.insertarVotante(Conexion, v);
-                if (resultado == true) {
-                    Votante obj = new Operaciones().devuelveVotante(nif, Conexion);
-                    if (obj != null) {
-                        HttpSession session = request.getSession(true);
-                        session.setAttribute("votante", obj);
-                        session.setAttribute("usuario", nif);
-                        session.setAttribute("password", contraseña);
-                    }
-                    response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
-                }
+
+                //Votante obj = new Operaciones().devuelveVotante(nif, Conexion);
+                Votante obj = new Operaciones().inicioSesion(nif, contraseña, Conexion);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("votante", obj);
+                session.setAttribute("usuario", nif);
+                session.setAttribute("password", contraseña);
+
+                //guardamos los parametros generales en sesion
+                Parametros parametro = new Operaciones().devuelveParametros(Conexion);
+                session.setAttribute("parametros", parametro);
+                
+                response.sendRedirect("VISTAS/VistaMenuVotante.jsp");
+                return;
             } catch (ApplicationException e) {
                 response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + e);
             }

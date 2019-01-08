@@ -10,11 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
-
-
     <body>
-        
                 <div class="container d-flex flex-column justify-content-center" style="height:350px;margin-top:270px">
                     <div class="row"  style="margin-bottom: 50px;">
                         <div class="col-md-12">
@@ -27,9 +23,7 @@
                                             <th>NOMBRE</th>
                                             <th>ROL</th>
                                             <th>VOTADO</th>
-
                                         </tr>
-
                                     </thead>
                                     <tbody>
                                         <% ArrayList<Votante> a = (ArrayList) (session.getAttribute("arrayListadoCenso")); %>
@@ -48,10 +42,8 @@
                         </div>
                     </div>
         </div>
-
         <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-        
+        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script> 
     </body>
 
 </html>
