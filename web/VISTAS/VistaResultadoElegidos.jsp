@@ -107,7 +107,7 @@
                     <% }%>
                 </div>
             </form>
-            <div >
+            <div  style="margin-bottom: 150px">
                 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
             </div>
         </div>

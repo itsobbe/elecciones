@@ -62,7 +62,7 @@ public class ControladorVotar extends HttpServlet {
 
                 int res = new Operaciones().votar(votante, partido, Conexion);
                 ((Votante) (request.getSession().getAttribute("votante"))).setVotado("S");
-                String mensaje = "Gracias por votar, su voto se ha registrado con éxito";
+                String mensaje = "Gracias por votar, su voto se ha registrado";
                 response.sendRedirect("VISTAS/VistaMensajeCorrecto.jsp?mensaje=" + mensaje);
 
             } catch (ApplicationException e) {

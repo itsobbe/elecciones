@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <body>
-                <div class="container d-flex flex-column justify-content-center" style="height:350px;margin-top:270px">
+                <div class="container d-flex flex-column justify-content-center" style="height:350px;margin-top:550px">
                     <div class="row"  style="margin-bottom: 50px;">
                         <div class="col-md-12">
                             <div>

@@ -8,7 +8,7 @@
 <jsp:include page="pruebaMenu.jsp"></jsp:include>
 <%@page import="modelo.Partido"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <body>

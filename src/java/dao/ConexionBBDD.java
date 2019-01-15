@@ -23,6 +23,7 @@ public class ConexionBBDD {
         //sin ?autoReconnect=true&useSSL=false no funciona
         String connectionUrl = "jdbc:mysql://localhost/elecciones_obb?autoReconnect=true&useSSL=false";
         Conex = DriverManager.getConnection(connectionUrl,"root","root");
+//        Conex=DriverManager.getConnection("jdbc:mysql://localhost/elecciones_obb?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf-8","root","root");
     }
 
     public synchronized static ConexionBBDD GetConexion()

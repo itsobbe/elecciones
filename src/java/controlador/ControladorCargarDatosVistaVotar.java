@@ -58,7 +58,7 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
                 Votante votante = (Votante) request.getSession().getAttribute("votante");
                 Parametros parametro = (Parametros) request.getSession().getAttribute("parametros");
                 if (votante.getVotado().equals("S")) {
-                    String mensaje = "No puede votar unza vez votado";
+                    String mensaje = "No puede votar una vez votado";
                     response.sendRedirect("VISTAS/VistaMensajeError.jsp?error=" + mensaje);
                     return;
                 }else if (parametro.getConsultaAbierta().equals("N")) {
