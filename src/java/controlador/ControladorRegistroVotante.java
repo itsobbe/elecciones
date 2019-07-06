@@ -45,7 +45,6 @@ public class ControladorRegistroVotante extends HttpServlet {
         super.init();
         /* Establecemos la conexión, si no existe */
         try {
-//            ConexionBBDD ConexBD = ConexionBBDD.GetConexion();
             Conexion = ConexionBBDD.GetConexion().GetCon();
         } catch (ClassNotFoundException cnfe) {
         } catch (SQLException sqle) {

@@ -21,8 +21,8 @@ public class ConexionBBDD {
     private ConexionBBDD() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         //sin ?autoReconnect=true&useSSL=false no funciona
-        String connectionUrl = "jdbc:mysql://localhost/elecciones_obb?autoReconnect=true&useSSL=false";
-        Conex = DriverManager.getConnection(connectionUrl,"root","root");
+        String connectionUrl = "jdbc:mysql://https://node24916-env-5333534.jelastic.cloudhosted.es";
+        Conex = DriverManager.getConnection(connectionUrl,"root","KLYbba46558");
 //        Conex=DriverManager.getConnection("jdbc:mysql://localhost/elecciones_obb?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf-8","root","root");
     }
 

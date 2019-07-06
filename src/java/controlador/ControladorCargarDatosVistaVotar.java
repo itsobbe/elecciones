@@ -42,7 +42,6 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
         super.init();
         /* Establecemos la conexión, si no existe */
         try {
-//            ConexionBBDD ConexBD = ConexionBBDD.GetConexion();
             Conexion = ConexionBBDD.GetConexion().GetCon();
         } catch (ClassNotFoundException cnfe) {
         } catch (SQLException sqle) {
@@ -79,16 +78,6 @@ public class ControladorCargarDatosVistaVotar extends HttpServlet {
                  response.sendRedirect("VISTAS/VistaMensajeError.jsp?error="+e);
             }
             
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ControladorCargarDatosVistaVotar</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet ControladorCargarDatosVistaVotar at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
         }
     }
 
